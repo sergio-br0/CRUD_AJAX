@@ -54,3 +54,6 @@ const guardar = async (evento) => {
     console.log(error);
   }
 };
+
+// se asiganan el eventos a los elementos (botones).
+formulario.addEventListener('submit', guardar);

@@ -19,8 +19,15 @@ btnCancelar.parentElement.style.display = 'none';
 const guardar = async (evento) => {
   evento.preventDefault();
   if (!validarFormulario(formulario, ['cliente_id'])) {
-    Swal.fire('Error', 'Debe llenar todos los campos', 'error');
-    return;
+    Swal.fire({
+      title: 'Campos incompletos',
+      text: 'Debe llenar todos los campos del formulario.',
+      icon: 'warning',
+      showCancelButton: false,
+      confirmButtonColor: '#d33',
+      confirmButtonText: 'OK',
+  });
+  return;
   }
 
   const body = new FormData(formulario);
@@ -51,6 +58,14 @@ const guardar = async (evento) => {
       default:
         break;
     }
+    Swal.fire({
+      title: 'Guardado exitoso',
+      text: 'Los datos se han guardado correctamente.',
+      icon: 'success',
+      showCancelButton: false,
+      confirmButtonColor: '#3085d6',
+      confirmButtonText: 'OK',
+    });
 
   } catch (error) {
     console.log(error);
@@ -163,7 +178,14 @@ const modificar = async () => {
   const cliente_id = formulario.cliente_id.value;
 
   if (!validarFormulario(formulario, ['cliente_nombre'])) {
-    Swal.fire('Error', 'Campos incompletos. Debe llenar todos los campos.', 'error');
+    Swal.fire({
+      title: 'Campos incompletos',
+      text: 'Debe llenar todos los campos del formulario.',
+      icon: 'warning',
+      showCancelButton: false,
+      confirmButtonColor: '#d33',
+      confirmButtonText: 'OK',
+    });
     return;
   }
 
@@ -200,6 +222,14 @@ const modificar = async () => {
       default:
         break;
     }
+    Swal.fire({
+      title: 'Modificación exitosa',
+      text: 'Los datos se han modificado correctamente.',
+      icon: 'success',
+      showCancelButton: false,
+      confirmButtonColor: '#3085d6',
+      confirmButtonText: 'OK',
+    })
   } catch (error) {
     console.log(error);
   }
@@ -207,7 +237,15 @@ const modificar = async () => {
 
 //se creo la funcion eliminar 
 const eliminar = async (id) => {
-if (confirm('¿Desea eliminar este cliente?')) {
+  if (await Swal.fire({
+    title: '¿Desea eliminar este Cliente?',
+    icon: 'question',
+    showCancelButton: true,
+    confirmButtonColor: '#d33',
+    cancelButtonColor: '#3085d6',
+    confirmButtonText: 'Sí, eliminar',
+    cancelButtonText: 'Cancelar',
+}).then((result) => result.isConfirmed)) {
   const body = new FormData();
   body.append('tipo', 3);
   body.append('cliente_id', id);
@@ -234,8 +272,15 @@ if (confirm('¿Desea eliminar este cliente?')) {
       default:
         break;
     }
+    Swal.fire({
+      title: 'Eliminación exitosa',
+      text: 'El Cliente ha sido eliminado correctamente.',
+      icon: 'success',
+      showCancelButton: false,
+      confirmButtonColor: '#3085d6',
+      confirmButtonText: 'OK',
+    })
 
-    alert(mensaje);
   } catch (error) {
     console.log(error);
   }

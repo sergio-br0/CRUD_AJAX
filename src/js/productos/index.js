@@ -67,9 +67,6 @@ const guardar = async (evento) => {
             showCancelButton: false,
             confirmButtonColor: '#3085d6',
             confirmButtonText: 'OK',
-          }).then((result) => {
-            if (result.isConfirmed) {
-            }
           });
 
     } catch (error) {

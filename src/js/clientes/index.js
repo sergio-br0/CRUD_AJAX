@@ -163,7 +163,7 @@ const modificar = async () => {
   const cliente_id = formulario.cliente_id.value;
 
   if (!validarFormulario(formulario, ['cliente_nombre'])) {
-    alert('Campos incompletos', 'Debe llenar todos los campos.', 'error');
+    Swal.fire('Error', 'Campos incompletos. Debe llenar todos los campos.', 'error');
     return;
   }
 

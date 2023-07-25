@@ -19,8 +19,15 @@ console.log(btnGuardar.dataset)
 const guardar = async (evento) => {
     evento.preventDefault();
     if(!validarFormulario(formulario, ['producto_id'])){
-        alert('Debe llenar todos los campos');
-        return 
+        Swal.fire({
+            title: 'Campos incompletos',
+            text: 'Debe llenar todos los campos del formulario.',
+            icon: 'warning',
+            showCancelButton: false,
+            confirmButtonColor: '#d33',
+            confirmButtonText: 'OK',
+        });
+        return;
     }
 
     const body = new FormData(formulario)
@@ -53,7 +60,17 @@ const guardar = async (evento) => {
                 break;
         }
 
-        alert(mensaje);
+        Swal.fire({
+            title: 'Guardado exitoso',
+            text: 'Los datos se han guardado correctamente.',
+            icon: 'success',
+            showCancelButton: false,
+            confirmButtonColor: '#3085d6',
+            confirmButtonText: 'OK',
+          }).then((result) => {
+            if (result.isConfirmed) {
+            }
+          });
 
     } catch (error) {
         console.log(error);
@@ -163,8 +180,15 @@ const cancelarAccion = () => {
 
 const modificar = async () => {
     if(!validarFormulario(formulario)){
-        alert('Debe llenar todos los campos');
-        return 
+        Swal.fire({
+            title: 'Campos incompletos',
+            text: 'Debe llenar todos los campos del formulario.',
+            icon: 'warning',
+            showCancelButton: false,
+            confirmButtonColor: '#d33',
+            confirmButtonText: 'OK',
+          });
+          return;
     }
 
     const body = new FormData(formulario)
@@ -196,16 +220,30 @@ const modificar = async () => {
             default:
                 break;
         }
-
-        alert(mensaje);
-
+        Swal.fire({
+            title: 'Modificación exitosa',
+            text: 'Los datos se han modificado correctamente.',
+            icon: 'success',
+            showCancelButton: false,
+            confirmButtonColor: '#3085d6',
+            confirmButtonText: 'OK',
+          })
+       
     } catch (error) {
         console.log(error);
     }
 }
 
 const eliminar = async (id) => {
-    if(confirm("¿Desea eliminar este producto?")){
+        if (await Swal.fire({
+            title: '¿Desea eliminar este producto?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Sí, eliminar',
+            cancelButtonText: 'Cancelar',
+        }).then((result) => result.isConfirmed)) {
         const body = new FormData()
         body.append('tipo', 3)
         body.append('producto_id', id)
@@ -233,7 +271,14 @@ const eliminar = async (id) => {
                     break;
             }
     
-            alert(mensaje);
+            Swal.fire({
+                title: 'Eliminación exitosa',
+                text: 'El producto ha sido eliminado correctamente.',
+                icon: 'success',
+                showCancelButton: false,
+                confirmButtonColor: '#3085d6',
+                confirmButtonText: 'OK',
+              })
     
         } catch (error) {
             console.log(error);

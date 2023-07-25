@@ -158,6 +158,92 @@ const buscar = async () => {
     divTabla.style.display = '';
   };
 
-  // se asiganan el eventos a los elementos (botones).
+  //se cre la funcion modificar
+const modificar = async () => {
+  const cliente_id = formulario.cliente_id.value;
+
+  if (!validarFormulario(formulario, ['cliente_nombre'])) {
+    alert('Campos incompletos', 'Debe llenar todos los campos.', 'error');
+    return;
+  }
+
+  const body = new FormData(formulario);
+  body.append('tipo', 2);
+  body.append('cliente_id', cliente_id)
+
+  const url = '/crud_ajax/controladores/clientes/index.php';
+  const config = {
+    method: 'POST',
+    body,
+  };
+
+  try {
+    const respuesta = await fetch(url, config);
+    const data = await respuesta.json();
+    console.log(data);
+
+    const { codigo, mensaje, detalle } = data;
+
+    switch (codigo) {
+      case 1:
+        formulario.reset();
+        cancelarAccion();
+        buscar();
+
+        Swal.fire('Actualizado', mensaje, 'success');
+        break;
+
+      case 0:
+        Swal.fire('Error, verifique sus datos', mensaje, 'error');
+        break;
+
+      default:
+        break;
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+//se creo la funcion eliminar 
+const eliminar = async (id) => {
+if (confirm('¿Desea eliminar este cliente?')) {
+  const body = new FormData();
+  body.append('tipo', 3);
+  body.append('cliente_id', id);
+  const url = '/crud_ajax/controladores/clientes/index.php';
+  const config = {
+    method: 'POST',
+    body,
+  };
+  try {
+    const respuesta = await fetch(url, config);
+    const data = await respuesta.json();
+
+    const { codigo, mensaje, detalle } = data;
+
+    switch (codigo) {
+      case 1:
+        buscar();
+        break;
+
+      case 0:
+        console.log(detalle);
+        break;
+
+      default:
+        break;
+    }
+
+    alert(mensaje);
+  } catch (error) {
+    console.log(error);
+  }
+}
+};
+
+  // se asiganan los eventos a los elementos (botones).
 formulario.addEventListener('submit', guardar);
 btnBuscar.addEventListener('click', buscar);
+btnCancelar.addEventListener('click', cancelarAccion);
+btnModificar.addEventListener('click', modificar)
